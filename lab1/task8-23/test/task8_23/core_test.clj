@@ -14,3 +14,5 @@
 ;; Тест для sum-of-non-abundant-sums
 (deftest test-sum-of-non-abundant-sums
   (is (= (sum-of-non-abundant-sums) 4179871))) 
+
+(run-tests)
