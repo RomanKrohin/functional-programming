@@ -5,7 +5,7 @@
   (reduce * digits))
 
 (defn max-product [n]
-  (apply max (map product (partition 5 1 (map #(Character/digit % 10) n)))))
+  (apply max (map product (partition 4 1 (map #(Character/digit % 10) n)))))
 
 (defn -main
   "Основная функция программы, которая запрашивает у пользователя строку чисел и выводит максимальное произведение пяти последовательных цифр."
