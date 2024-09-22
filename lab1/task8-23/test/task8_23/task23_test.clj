@@ -4,3 +4,5 @@
 
 (deftest sum-of-non-abundant-sums-test
   (is (= (sum-of-non-abundant-sums 28124) 4179871)))
+
+(run-tests)
