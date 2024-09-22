@@ -27,4 +27,4 @@ jobs:
       - name: Run formatting check
         run: cd ${{ matrix.project }} && lein format
       - name: Run tests
-        run: cd ${{ matrix.project }} && lein test
+        run: cd ${{ matrix.project }} && lein test :exit-after-tests
