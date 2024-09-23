@@ -2,29 +2,31 @@ name: Clojure CI
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
   pull_request:
-    branches: [main]
+    branches: [ main ]
 
 jobs:
-  test:
+  build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        project: [lab1/task8-23]
 
     steps:
-      - uses: actions/checkout@v3
-      - name: Set up JDK
-        uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '17'  
-      - name: Install Leiningen
-        run: sudo apt-get install leiningen
-      - name: Run linting
-        run: cd ${{ matrix.project }} && lein lint
-      - name: Run formatting check
-        run: cd ${{ matrix.project }} && lein format
-      - name: Run tests
-        run: cd ${{ matrix.project }} && lein test
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Clojure
+      uses: DeLaGuardo/setup-clojure@master
+      with:
+        cli: 1.10.3.1040
+
+    - name: Install clj-kondo
+      run: npm install -g clj-kondo
+
+    - name: Lint code
+      run: cd lab1/task8-23 && clojure -A:lint
+
+    - name: Format code
+      run: cd lab1/task8-23 && clojure -A:format
+
+    - name: Run tests
+      run: cd lab1/task8-23 && clojure -A:test
