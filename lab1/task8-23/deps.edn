@@ -1,0 +1,12 @@
+{:paths ["src" "test"]
+ :deps {org.clojure/clojure {:mvn/version "1.11.1"}
+        lambdaisland/kaocha {:mvn/version "1.0.887"}
+        clj-kondo/clj-kondo {:mvn/version "2024.08.29"}
+        zprint/zprint {:mvn/version "1.2.3"}}
+ :aliases
+ {:test {:extra-paths ["test"]
+         :main-opts ["-m" "kaocha.runner"]}
+  :lint {:extra-deps {clj-kondo/clj-kondo {:mvn/version "2024.08.29"}}
+         :main-opts ["-m" "clj-kondo.main" "--lint" "src" "test"]}
+  :format {:extra-deps {zprint/zprint {:mvn/version "1.2.3"}}
+           :main-opts ["-m" "zprint.main" "--write" "src" "test"]}}}
