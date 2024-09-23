@@ -9,6 +9,7 @@
             [task8-23.task8tailrec :refer [max-product-tail]]
             [task8-23.task23 :refer [sum-of-non-abundant-sums]]
             [task8-23.task23tailrec :refer [sum-of-non-abundant-sums-tail-rec]]
+            [task8-23.task23loop :refer [sum-of-non-abundant-sums-loop]]
             [task8-23.task23rec :refer [sum-of-non-abundant-sums-rec]]
             [task8-23.task23modular :refer [sum-of-non-abundant-sums-modular]]
             [task8-23.task23map :refer [sum-of-non-abundant-sums-map]]
@@ -53,7 +54,11 @@
 (deftest test-sum-of-non-abundant-sums-map
   (is (= (sum-of-non-abundant-sums-map) 4179871)))
 
+(deftest test-sum-of-non-abundant-sums-loop
+  (is (= (sum-of-non-abundant-sums-loop) 4179871)))
+
 (deftest test-sum-of-non-abundant-sums-rec
   (is (= (sum-of-non-abundant-sums-rec) 4179871)))
+
 
 (run-tests)

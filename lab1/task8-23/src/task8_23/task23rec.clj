@@ -1,33 +1,32 @@
 (ns task8-23.task23rec
   (:gen-class))
 
-(defn divisors [n]
-  (loop [i 1
-         divisors []]
-    (if (> i (quot n 2))
-      divisors
-      (if (zero? (mod n i))
-        (recur (inc i) (conj divisors i))
-        (recur (inc i) divisors)))))
+(defn sum-divisors-helper [n i sum]
+  (if (> i (quot n 2))
+    sum
+    (recur n (inc i) (if (zero? (mod n i)) (+ sum i) sum))))
 
-(defn abundant? [n]
-  (> (reduce + (divisors n)) n))
+(defn sum-divisors [n]
+  (sum-divisors-helper n 1 0))
 
-(defn find-abundant-numbers [limit]
-  (loop [n 1
-         abundant-numbers []]
-    (if (>= n limit)
-      abundant-numbers
-      (if (abundant? n)
-        (recur (inc n) (conj abundant-numbers n))
-        (recur (inc n) abundant-numbers)))))
+(defn abundant-rec? [n]
+  (> (sum-divisors n) n))
 
-(defn can-be-sum-of-two-abundant? [n abundant-set]
+(defn find-abundant-numbers-rec [limit i abundants]
+  (if (> i limit)
+    abundants
+    (recur limit (inc i) (if (abundant-rec? i) (conj abundants i) abundants))))
+
+(defn can-be-sum-of-two-abundant-rec? [n abundant-set]
   (some #(contains? abundant-set (- n %)) abundant-set))
 
 (defn sum-of-non-abundant-sums-rec []
   (let [limit 28123
-        abundant-numbers (find-abundant-numbers limit)
+        abundant-numbers (find-abundant-numbers-rec limit 1 [])
         abundant-set (set abundant-numbers)]
-    (reduce + (filter #(not (can-be-sum-of-two-abundant? % abundant-set))
-                      (range 1 (inc limit))))))
+    (loop [i 1 total-sum 0]
+      (if (> i limit)
+        total-sum
+        (recur (inc i) (if (can-be-sum-of-two-abundant-rec? i abundant-set)
+                         total-sum
+                         (+ total-sum i)))))))

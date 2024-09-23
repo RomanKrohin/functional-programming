@@ -12,28 +12,26 @@
 (defn abundant-tail-rec? [n]
   (> (sum-divisors n) n))
 
-(defn find-abundant-numbers-tail-rec [limit]
-  (loop [i 1, abundants []]
-    (if (> i limit)
-      abundants
-      (recur (inc i) (if (abundant-tail-rec? i) (conj abundants i) abundants)))))
+(defn find-abundant-numbers-tail-rec [limit i abundants]
+  (if (> i limit)
+    abundants
+    (recur limit (inc i) (if (abundant-tail-rec? i) (conj abundants i) abundants))))
 
-(defn can-be-sum-of-two-abundant-tail-rec? [n abundant-set]
-  (loop [abundant-nums (seq abundant-set)]
-    (if (empty? abundant-nums)
-      false
-      (let [abundant-num (first abundant-nums)]
-        (if (contains? abundant-set (- n abundant-num))
-          true
-          (recur (next abundant-nums)))))))
+(defn can-be-sum-of-two-abundant-tail-rec? [n abundant-set abundant-nums]
+  (if (empty? abundant-nums)
+    false
+    (let [abundant-num (first abundant-nums)]
+      (if (contains? abundant-set (- n abundant-num))
+        true
+        (recur n abundant-set (rest abundant-nums))))))
 
 (defn sum-of-non-abundant-sums-tail-rec []
   (let [limit 28123
-        abundant-numbers (find-abundant-numbers-tail-rec limit)
+        abundant-numbers (find-abundant-numbers-tail-rec limit 1 [])
         abundant-set (set abundant-numbers)]
-    (loop [i 1, total-sum 0]
+    (loop [i 1 total-sum 0]
       (if (> i limit)
         total-sum
-        (recur (inc i) (if (can-be-sum-of-two-abundant-tail-rec? i abundant-set)
+        (recur (inc i) (if (can-be-sum-of-two-abundant-tail-rec? i abundant-set (seq abundant-set))
                          total-sum
                          (+ total-sum i)))))))
