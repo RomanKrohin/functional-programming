@@ -10,6 +10,6 @@
   (is (= (product [1 2 3 4 5]) 120)))
 
 (deftest test-sum-of-non-abundant-sums
-  (is (= (sum-of-non-abundant-sums) 4179871))) 
+  (is (= (sum-of-non-abundant-sums) 4179871)))
 
 (run-tests)
