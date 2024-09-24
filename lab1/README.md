@@ -177,7 +177,7 @@
 
 ## Тестирвоание
 
-[Решение](task8-23/test/task8_23/core_test.clj)
+[Тесты](task8-23/test/task8_23/core_test.clj)
 
 ## Заключение
 
