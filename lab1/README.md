@@ -148,8 +148,6 @@
 
 ```clojure
 (> (reduce + (filter #(zero? (mod n %)) (map identity (range 1 (inc (quot n 2)))))) n))
-
-(> (reduce + (filter #(zero? (mod n %)) (map identity (range 1 (inc (quot n 2)))))) n))
 ```
 
 Использование `map` делает код кратким и эффективным при обработке последовательностей.
