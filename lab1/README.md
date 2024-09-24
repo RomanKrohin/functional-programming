@@ -101,11 +101,10 @@
 Этот модуль применяет хвостовую рекурсию для эффективного вычисления:
 
 ```clojure
-(defn find-abundant-numbers-tail-rec [n]
-  (loop [i 1, abundants []]
-    (if (> i n)
-      abundants
-      (recur (inc i) (if (abundant? i) (conj abundants i) abundants)))))
+(defn find-abundant-numbers-tail-rec [limit i abundants]
+  (if (> i limit)
+    abundants
+    (recur limit (inc i) (if (abundant-tail-rec? i) (conj abundants i) abundants))))
 ```
 
 Лаконичное и эффективное решение для нахождения всех избыточных чисел с использованием хвостовой рекурсии, что позволяет избежать переполнения стека.
@@ -116,8 +115,13 @@
 Этот модуль использует стандартную рекурсию для нахождения суммы делителей и проверки чисел:
 
 ```clojure
-(defn abundant? [n]
-  (> (sum-divisors n) n))
+(defn sum-divisors-helper [n i sum]
+  (if (> i (quot n 2))
+    sum
+    (recur n (inc i) (if (zero? (mod n i)) (+ sum i) sum))))
+
+(defn sum-divisors [n]
+  (sum-divisors-helper n 1 0))
 ```
 
 Простое рекурсивное решение для проверки чисел на избыточность.
@@ -128,8 +132,11 @@
 Модульное решение структурирует код для удобного использования функций:
 
 ```clojure
-(defn sum-of-non-abundant-sums-modular [n]
-  (reduce + (filter #(not (can-be-sum-of-two-abundant? %)) (range 1 n))))
+(defn sum-of-non-abundant-sums-modular []
+  (let [limit 28123
+        abundant-numbers (filter-abundant (generate-sequence limit))
+        abundant-set (set abundant-numbers)]
+    (sum-sequence (filter #(not (can-be-sum-of-two-abundant? % abundant-set)) (generate-sequence (inc limit))))))
 ```
 
 Каждая функция отвечает за определенную задачу, что делает код читаемым и расширяемым.
@@ -140,8 +147,9 @@
 Этот модуль применяет `map` для применения функций к последовательностям:
 
 ```clojure
-(defn sum-of-divisors-map [n]
-  (apply + (map #(if (zero? (mod n %)) % 0) (range 1 n))))
+(> (reduce + (filter #(zero? (mod n %)) (map identity (range 1 (inc (quot n 2)))))) n))
+
+(> (reduce + (filter #(zero? (mod n %)) (map identity (range 1 (inc (quot n 2)))))) n))
 ```
 
 Использование `map` делает код кратким и эффективным при обработке последовательностей.
@@ -152,11 +160,14 @@
 Циклы используются для итеративного решения задачи:
 
 ```clojure
-(defn find-abundant-numbers-loop [n]
-  (loop [i 1 abundants []]
-    (if (> i n)
-      abundants
-      (recur (inc i) (if (abundant? i) (conj abundants i) abundants)))))
+(defn find-abundant-numbers [limit]
+  (loop [n 1
+         abundant-numbers []]
+    (if (>= n limit)
+      abundant-numbers
+      (if (abundant? n)
+        (recur (inc n) (conj abundant-numbers n))
+        (recur (inc n) abundant-numbers)))))
 ```
 
 Циклы обеспечивают предсказуемое выполнение и быстрое решение.
@@ -167,8 +178,8 @@
 Решение использует бесконечные последовательности для поиска чисел:
 
 ```clojure
-(defn abundant-seq []
-  (filter abundant? (range 1)))
+(defn natural-numbers []
+  (iterate inc 1))
 ```
 
 Позволяет работать с потенциально бесконечными данными.
